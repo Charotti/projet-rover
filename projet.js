@@ -204,19 +204,30 @@ axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=100").then((res) => 
 
 const randomPokemon = Math.floor(Math.random() * 99)
     //console.log(randomPokemon)
+let timing = true;
+setTimeout(function() {
+    return timing = false;
+}, 60000);
+
+console.log(randomPokemon)
 
 function launch() {
-
+    if (timing === false) {
+        return console.log("game over")
+    }
     if (numberOfGame === 0) {
         console.table(grid);
+
     }; // permet d'afficher le tableau en début de partie
 
-    prompt.get(conditions, // Paramètres auquel doit correspondre la lettre entrée dans prompt
+    prompt.get(conditions, // Paramètre auquel doit correspondre la lettre entrée dans prompt
         function(err, result) {
+
+
             if (err) {
                 return console.log("Error " + err) //     Guard
             }
-            pilotRover(result.letter) //    Donne à ma fonction piloteRover la lettre entré dans prompt
+            pilotRover(result.letter) //    Donne à ma fonction piloteRover la lettre entrée dans prompt
             let idPokemon = parseInt(`${rover.y}${rover.x}`) //    Définition d'un id pokemon
             numberOfGame += 1;
             // partie décourverte de pokemon
@@ -227,7 +238,15 @@ function launch() {
                 console.log(`You must found ${pokemons[randomPokemon]}`)
                 console.log(pokemons[idPokemon])
             }
-            launch() //                   relance le jeu
+            if (timing === true) {
+                launch()
+            }
+
+
+
         })
+
 };
+
+
 launch();
