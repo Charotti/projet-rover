@@ -1,6 +1,9 @@
+console.log("Chargement en cours");
+
 //                                       Installation prompt
 const prompt = require("prompt");
 prompt.start();
+const axios = require("axios");
 
 //                                           Etape 1 déclaration Grid
 
@@ -62,16 +65,15 @@ let rover = {
     y: 0, // vertical
     travelLog: []
 };
-//console.table(grid);
-// console.log(rover.x)
 
-// console.log(turnRight(rover))
+
+
 //                                 Etape 4 move forward
 
 function moveForward(myRover) {
     switch (myRover.direction) {
         case "N":
-            if (myRover.y === 0) { // guard pour ne pas sortir du talbeau
+            if (myRover.y === 0) { // guard pour ne pas sortir du tableau
                 console.log("Vous sortez de la grille")
             } else {
                 grid[rover.y][rover.x] = " "; //           Fait disparaitre le rover 
@@ -187,10 +189,27 @@ const conditions = [{
     require: true
 }];
 let numberOfGame = 0;
+//                              Importation de l'API
+let pokemons;
+
+axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=100").then((res) => {
+    pokemons = res.data.results.map((pokemon) => {
+            return pokemon.name;
+        })
+        //console.log(pokemons);
+}).catch((err) => {
+    console.log("erreur" + err)
+});
+
+
+const randomPokemon = Math.floor(Math.random() * 99)
+    //console.log(randomPokemon)
 
 function launch() {
 
-    if (numberOfGame === 0) { console.table(grid) }; // permet d'afficher le trableau en début de partie
+    if (numberOfGame === 0) {
+        console.table(grid);
+    }; // permet d'afficher le tableau en début de partie
 
     prompt.get(conditions, // Paramètres auquel doit correspondre la lettre entrée dans prompt
         function(err, result) {
@@ -198,9 +217,17 @@ function launch() {
                 return console.log("Error " + err) //     Guard
             }
             pilotRover(result.letter) //    Donne à ma fonction piloteRover la lettre entré dans prompt
+            let idPokemon = parseInt(`${rover.y}${rover.x}`) //    Définition d'un id pokemon
             numberOfGame += 1;
+            // partie décourverte de pokemon
+
+            if (randomPokemon === idPokemon) {
+                return console.log(`Félicitations vous avez trouvé : ${pokemons[idPokemon]}`)
+            } else {
+                console.log(`You must found ${pokemons[randomPokemon]}`)
+                console.log(pokemons[idPokemon])
+            }
             launch() //                   relance le jeu
         })
-}
-
+};
 launch();
