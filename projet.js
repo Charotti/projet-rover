@@ -5,7 +5,7 @@ prompt.start();
 //                                           Etape 1 déclaration Grid
 
 const grid = [
-    [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+    ["N", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -186,14 +186,19 @@ const conditions = [{
     message: "Only  r,  l , f and b are valid",
     require: true
 }];
+let numberOfGame = 0;
 
 function launch() {
+
+    if (numberOfGame === 0) { console.table(grid) }; // permet d'afficher le trableau en début de partie
+
     prompt.get(conditions, // Paramètres auquel doit correspondre la lettre entrée dans prompt
         function(err, result) {
             if (err) {
                 return console.log("Error " + err) //     Guard
             }
             pilotRover(result.letter) //    Donne à ma fonction piloteRover la lettre entré dans prompt
+            numberOfGame += 1;
             launch() //                   relance le jeu
         })
 }
