@@ -53,9 +53,10 @@ function turnRight(myRover) {
 
 
 let rover = {
-    direction: "S",
+    direction: "N",
     x: 0, //horizontal
-    y: 0 // vertical
+    y: 0, // vertical
+    travelLog: []
 };
 //console.table(grid);
 // console.log(rover.x)
@@ -66,19 +67,40 @@ let rover = {
 function moveForward(myRover) {
     switch (myRover.direction) {
         case "N":
-            myRover.y -= 1;
+            if (myRover.y === 0) {
+                console.log("Vous sortez de la grille")
+            } else {
+                grid[rover.y][rover.x] = " "; //           Fait disparaitre le rover 
+                myRover.y -= 1; //                 Fait déplacer le rover
+            }
             break;
         case "E":
-            myRover.x += 1;
+            if (myRover.x === 9) {
+                console.log("Vous sortez de la grille")
+            } else {
+                grid[rover.y][rover.x] = " ";
+                myRover.x += 1;
+            }
             break;
         case "S":
-            myRover.y += 1;
+            if (myRover.y === 9) {
+                console.log("Vous sortez de la grille")
+            } else {
+                grid[rover.y][rover.x] = " ";
+                myRover.y += 1;
+            }
             break;
         case "W":
-            myRover.x -= 1;
+            if (myRover.x === 0) {
+                console.log("Vous sortez de la grille")
+            } else {
+                grid[rover.y][rover.x] = " ";
+                myRover.x -= 1;
+            }
             break;
     }
-    grid[rover.y][rover.x] = rover.direction;
+    grid[rover.y][rover.x] = rover.direction; // fait réapparaitre le rover à la position modifiée précedement
+
 }
 //moveForward(rover);
 
@@ -92,7 +114,7 @@ function moveForward(myRover) {
 //                                    Etape 5
 
 function pilotRover(str) {
-
+    grid[rover.y][rover.x] = rover.direction;
     for (let i = 0; i < str.length; i++) {
         if (str.charAt(i) === "l") {
             turnLeft(rover)
@@ -101,11 +123,12 @@ function pilotRover(str) {
             // console.log("c'est un r")
             turnRight(rover)
         } else if (str.charAt(i) === "f") {
-            console.log("ceci est un f");
-            moveForward(rover)
-            console.table(grid)
+            rover.travelLog.push(`Position ${i} : ${rover.y}y / ${rover.x}x `) // historique des positions si le rover se déplace
+            moveForward(rover);
         }
     }
+    console.table(grid);
+    console.log(rover.travelLog)
 
 }
 pilotRover("fff")
