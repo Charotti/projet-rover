@@ -1,3 +1,7 @@
+//                                       Installation prompt
+const prompt = require("prompt");
+prompt.start()
+
 //                                           Etape 1 déclaration Grid
 
 const grid = [
@@ -67,7 +71,7 @@ let rover = {
 function moveForward(myRover) {
     switch (myRover.direction) {
         case "N":
-            if (myRover.y === 0) {
+            if (myRover.y === 0) { // guard pour ne pas sortir du talbeau
                 console.log("Vous sortez de la grille")
             } else {
                 grid[rover.y][rover.x] = " "; //           Fait disparaitre le rover 
@@ -116,6 +120,7 @@ function moveForward(myRover) {
 function pilotRover(str) {
     grid[rover.y][rover.x] = rover.direction;
     for (let i = 0; i < str.length; i++) {
+
         if (str.charAt(i) === "l") {
             turnLeft(rover)
                 // console.log("c'est un l")
@@ -125,10 +130,29 @@ function pilotRover(str) {
         } else if (str.charAt(i) === "f") {
             rover.travelLog.push(`Position ${i} : ${rover.y}y / ${rover.x}x `) // historique des positions si le rover se déplace
             moveForward(rover);
+            console.log(rover.travelLog)
         }
     }
     console.table(grid);
-    console.log(rover.travelLog)
-
 }
-pilotRover("fff")
+
+
+
+const conditions = [{
+    name: "letter",
+    description: "Play with a f to forward, a l to turn left, a r to turn right",
+    type: "string",
+    pattern: /[l|r|f]/i,
+    message: "Only the r, th l and the f are valid",
+    require: true
+}]
+
+function launch() {
+    prompt.get(conditions,
+        function(err, result) {
+            pilotRover(result.letter)
+            launch()
+        })
+}
+
+launch()
