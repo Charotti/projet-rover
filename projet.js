@@ -167,11 +167,11 @@ function pilotRover(str) {
             // console.log("c'est un r")
             turnRight(rover);
         } else if (str.charAt(i) === "f") {
-            rover.travelLog.push(`Position ${i} : ${rover.y}y / ${rover.x}x `) // historique des positions si le rover se déplace
+            rover.travelLog.push(`Mouvement ${i} : ${rover.y}y / ${rover.x}x `) // historique des positions si le rover se déplace
             moveForward(rover);
             console.log(rover.travelLog);
         } else if (str.charAt(i) === "b") {
-            rover.travelLog.push(`Position ${i} : ${rover.y}y / ${rover.x}x `) // historique des positions si le rover se déplace
+            rover.travelLog.push(`Mouvement ${i} : ${rover.y}y / ${rover.x}x `) // historique des positions si le rover se déplace
             moveBackward(rover);
             console.log(rover.travelLog);
         }
@@ -203,13 +203,14 @@ axios.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=100").then((res) => 
 
 
 const randomPokemon = Math.floor(Math.random() * 99)
-    //console.log(randomPokemon)
+    //console.log(randomPokemon)         Affiche la case ou se trouve le pokemon
 let timing = true;
 setTimeout(function() {
-    return timing = false;
-}, 60000);
 
-console.log(randomPokemon)
+    return timing = false;
+}, 10000);
+
+console.log(randomPokemon) // position du pokemon
 
 function launch() {
     if (timing === false) {
@@ -221,8 +222,7 @@ function launch() {
     }; // permet d'afficher le tableau en début de partie
 
     prompt.get(conditions, // Paramètre auquel doit correspondre la lettre entrée dans prompt
-        function(err, result) {
-
+        function(err, result) { // deuxième paramètre correspond à au resultat de prompt get
 
             if (err) {
                 return console.log("Error " + err) //     Guard
@@ -241,12 +241,8 @@ function launch() {
             if (timing === true) {
                 launch()
             }
-
-
-
         })
-
 };
 
-
 launch();
+//console.log("Game over")
